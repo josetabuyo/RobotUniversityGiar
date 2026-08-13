@@ -231,8 +231,8 @@ python legged_gym/scripts/rugiar_driver.py \
     --policy scratch_wobbly:./policies/scratch_wobbly.pt \
     --policy undertrained_dummy:./policies/undertrained_dummy.pt \
     --policy crouch:./policies/crouch.pt \
-    --active stable --control_port 9013
-# then open http://localhost:9013
+    --active stable --control_port 9017
+# then open http://localhost:9017
 ```
 
 ---
