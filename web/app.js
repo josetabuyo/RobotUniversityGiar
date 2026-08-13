@@ -1026,6 +1026,14 @@ function frame(now) {
     const nyaw = smoothAxis(cruiseYaw, dyaw, commandRanges?.yaw, dt, DECEL_RATE);
     if (nvx !== cruiseVx || nvy !== cruiseVy || nyaw !== cruiseYaw) {
       cruiseVx = nvx; cruiseVy = nvy; cruiseYaw = nyaw;
+      // The coast-down after release changes cruiseVx/Vy/Yaw on every frame
+      // too, not just the accel-while-held case — those decayed values need
+      // to actually reach the server, or it just keeps executing the last
+      // command sent before release forever (see SimAdapter.send_action()'s
+      // periodic reassertion below). Marking dirty here is what gets a real
+      // decel-to-zero command out over the wire instead of just updating the
+      // local HUD/variable.
+      cmdDirty = true;
     }
     // Keep resending at the throttled ~10Hz rate for as long as any move
     // key is actually held, even once the ramp has settled and stopped
